@@ -4,6 +4,7 @@ import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoute.js";
 import taskRouter from "./routes/taskRoute.js";
+import cors from "cors";
 // Load environment variables
 dotenv.config();
 connectDB();
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 // Middlewares
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
