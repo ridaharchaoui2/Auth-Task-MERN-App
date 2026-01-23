@@ -31,7 +31,7 @@ function NavBar() {
           {/* Center - Home link */}
           <div className="absolute left-1/2 -translate-x-1/2">
             <Link
-              to="/"
+              to="/Home"
               className="text-lg font-semibold transition-colors hover:text-foreground/80"
             >
               Home

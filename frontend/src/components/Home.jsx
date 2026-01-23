@@ -1,19 +1,17 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useSelector } from "react-redux";
-import Tasks from "./tasks/Tasks";
 
 function Home() {
   const { userInfo } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   return (
     <>
       <main className="container mx-auto flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center px-4">
         {userInfo ? (
-          <>
-            <Tasks />
-          </>
+          navigate("/Home")
         ) : (
           <>
             <h1 className="text-4xl font-bold">

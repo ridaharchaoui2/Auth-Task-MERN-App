@@ -12,26 +12,24 @@ import { Switch } from "@/components/ui/switch";
 export function TaskCard({
   title,
   description,
-  status,
+  completed,
   onStatusChange,
   onDelete,
 }) {
-  const isCompleted = status === "completed";
-
   return (
     <Card className="flex flex-col">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between gap-2">
           <h3 className="font-semibold text-foreground">{title}</h3>
           <Badge
-            variant={isCompleted ? "default" : "secondary"}
+            variant={completed ? "default" : "secondary"}
             className={
-              isCompleted
+              completed
                 ? "bg-emerald-500 text-white hover:bg-emerald-500"
                 : "bg-gray-500 text-white hover:bg-gray-500"
             }
           >
-            {isCompleted ? "Completed" : "Pending"}
+            {completed ? "Completed" : "Pending"}
           </Badge>
         </div>
       </CardHeader>
@@ -41,12 +39,12 @@ export function TaskCard({
       <CardFooter className="flex items-center justify-between pt-0">
         <div className="flex items-center gap-2">
           <Switch
-            checked={isCompleted}
+            checked={completed}
             onCheckedChange={onStatusChange}
             className="data-[state=checked]:bg-emerald-500"
           />
           <span className="text-sm text-muted-foreground">
-            {isCompleted ? "Completed" : "Mark complete"}
+            {completed ? "Completed" : "Mark complete"}
           </span>
         </div>
         <Button

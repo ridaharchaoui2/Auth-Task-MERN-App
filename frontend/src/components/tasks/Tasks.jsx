@@ -1,4 +1,8 @@
-import { useGetAllTasksQuery } from "@/services/taskApi";
+import {
+  useDeleteTaskMutation,
+  useGetAllTasksQuery,
+  useUpdateTaskMutation,
+} from "@/services/taskApi";
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Trash2, Pencil } from "lucide-react";
@@ -22,11 +26,29 @@ function Tasks() {
     error,
     refetch,
   } = useGetAllTasksQuery();
+  const [updateTask] = useUpdateTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
 
   // Refetch when user logs in
   useEffect(() => {
     if (userInfo) refetch();
   }, [userInfo, refetch]);
+
+  const handleStatusChange = async (taskId, completed) => {
+    try {
+      await updateTask({ id: taskId, completed }).unwrap();
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
+  const handleDelete = async (taskId) => {
+    try {
+      await deleteTask(taskId).unwrap();
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
 
   if (isLoading) return <div>Loading tasks...</div>;
   if (isFetching) return <div>Loading tasks...</div>;
@@ -35,23 +57,22 @@ function Tasks() {
   return (
     <>
       {tasks && tasks.length > 0 ? (
-        <main className="min-h-screen bg-slate-100 py-12 px-4">
+        <main className="min-h-screen bg-slate-900 py-12 px-4">
           <div className="mx-auto max-w-6xl">
-            <h1 className="mb-8 text-center text-4xl font-semibold text-foreground">
+            <h1 className="mb-8 text-center text-4xl font-semibold text-white">
               My Tasks
             </h1>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {tasks.map((task) => (
                 <TaskCard
-                  key={task.id}
+                  key={task._id}
                   title={task.title}
                   description={task.description}
-                  status={task.completed}
+                  completed={task.completed}
                   onStatusChange={(completed) =>
-                    handleStatusChange(task.id, completed)
+                    handleStatusChange(task._id, completed)
                   }
-                  onEdit={() => handleEdit(task.id)}
-                  onDelete={() => handleDelete(task.id)}
+                  onDelete={() => handleDelete(task._id)}
                 />
               ))}
             </div>

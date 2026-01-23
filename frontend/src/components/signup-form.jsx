@@ -41,7 +41,7 @@ export function SignupForm({ ...props }) {
   };
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate("/Home");
     }
   }, [userInfo]);
 

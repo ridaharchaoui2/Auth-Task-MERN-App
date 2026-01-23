@@ -27,7 +27,7 @@ export function LoginForm({ className, ...props }) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate("/Home");
     }
   }, [userInfo]);
 
@@ -38,7 +38,7 @@ export function LoginForm({ className, ...props }) {
     const password = formData.get("password");
     const res = await login({ email, password }).unwrap();
     dispatch(setCredentials({ ...res }));
-    navigate("/");
+    navigate("/Home");
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
