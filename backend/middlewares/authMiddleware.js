@@ -4,13 +4,10 @@ import User from "../models/userModel.js";
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
+  token = req.cookies.jwt;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
+  if (token) {
     try {
-      token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = await User.findById(decoded.id).select("-password");
       next();
@@ -18,9 +15,7 @@ const protect = asyncHandler(async (req, res, next) => {
       console.error("Error in auth middleware:", error);
       res.status(401).json({ message: "Not authorized, token failed" });
     }
-  }
-
-  if (!token) {
+  } else {
     res.status(401).json({ message: "Not authorized, no token" });
   }
 });

@@ -36,7 +36,7 @@ export function LoginForm({ className, ...props }) {
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email");
     const password = formData.get("password");
-    const res = await login({ email, password });
+    const res = await login({ email, password }).unwrap();
     dispatch(setCredentials({ ...res }));
     navigate("/");
   };

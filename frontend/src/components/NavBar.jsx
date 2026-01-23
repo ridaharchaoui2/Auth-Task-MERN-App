@@ -3,10 +3,24 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { ModeToggle } from "@/components/mode-toggle";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLogoutMutation } from "@/services/authApi";
+import { removeCredentials } from "@/services/authSlice";
 
 function NavBar() {
   const { userInfo } = useSelector((state) => state.auth);
+  const [logout] = useLogoutMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const logoutHandler = async () => {
+    try {
+      await logout().unwrap();
+      dispatch(removeCredentials());
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur ">
@@ -24,7 +38,14 @@ function NavBar() {
             </Link>
           </div>
           {userInfo ? (
-            <>{userInfo.data.name}</>
+            <>
+              <div className="flex items-center gap-2">
+                {userInfo.name}
+                <Button variant="ghost" onClick={logoutHandler}>
+                  Logout
+                </Button>
+              </div>
+            </>
           ) : (
             <>
               {/* Right side - Mode toggle */}
