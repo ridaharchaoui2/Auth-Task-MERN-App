@@ -26,8 +26,8 @@ function App({ children }) {
             <Route path="" element={<PrivateRoute />}>
               <Route path="/Home" element={<Tasks />} />
             </Route>
-            <Route path="*" element={<NotFound />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
