@@ -8,6 +8,7 @@ import { useLogoutMutation } from "@/services/authApi";
 import { removeCredentials } from "@/services/authSlice";
 import { LogOut } from "lucide-react";
 import { toast } from "sonner";
+import SwitchTheme from "./SwitchTheme";
 
 function NavBar() {
   const { userInfo } = useSelector((state) => state.auth);
@@ -56,7 +57,7 @@ function NavBar() {
                   <LogOut />
                   Logout
                 </Button>
-                <ModeToggle />
+                <SwitchTheme />
               </div>
             </>
           ) : (
@@ -69,7 +70,7 @@ function NavBar() {
                 <Button variant="ghost">
                   <Link to="/signup">Sign up</Link>
                 </Button>
-                <ModeToggle />
+                <SwitchTheme />
               </div>
             </>
           )}

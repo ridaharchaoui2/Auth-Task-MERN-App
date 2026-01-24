@@ -48,8 +48,8 @@ export function TaskCard({
             variant={completed ? "default" : "secondary"}
             className={
               completed
-                ? "bg-emerald-500  "
-                : "bg-gray-500 text-white hover:bg-gray-500"
+                ? "bg-emerald-500 text-black "
+                : "bg-amber-300 dark:text-black"
             }
           >
             {completed ? "Completed" : "Pending"}
@@ -57,14 +57,14 @@ export function TaskCard({
         </div>
       </CardHeader>
       <CardContent className="flex-1 pb-4">
-        <p className="text-sm text-muted">{description}</p>
+        <p className="text-sm ">{description}</p>
       </CardContent>
       <CardFooter className="flex items-center justify-between pt-0">
         <div className="flex items-center gap-2">
           <Switch
             checked={completed}
             onCheckedChange={onStatusChange}
-            className="data-[state=unchecked]:bg-gray-400 dark:data-[state=unchecked]:bg-black  "
+            className="data-[state=unchecked]:bg-gray-400 dark:data-[state=unchecked]:bg-gray-800 "
           />
           <span className="text-sm text-muted-foreground">
             {completed ? "Completed" : "Mark complete"}
