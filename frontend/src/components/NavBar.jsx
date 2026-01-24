@@ -6,10 +6,12 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "@/services/authApi";
 import { removeCredentials } from "@/services/authSlice";
+import { LogOut } from "lucide-react";
+import { toast } from "sonner";
 
 function NavBar() {
   const { userInfo } = useSelector((state) => state.auth);
-  const [logout] = useLogoutMutation();
+  const [logout, { isError, isSuccess, isLoading }] = useLogoutMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logoutHandler = async () => {
@@ -21,6 +23,15 @@ function NavBar() {
       console.error(err);
     }
   };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Logout successful!");
+    }
+    if (isError) {
+      toast.error("Logout failed. Please try again.");
+    }
+  }, [isSuccess, isError]);
+
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur ">
@@ -41,9 +52,11 @@ function NavBar() {
             <>
               <div className="flex items-center gap-2">
                 {userInfo.name}
-                <Button variant="ghost" onClick={logoutHandler}>
+                <Button variant="outline" onClick={logoutHandler}>
+                  <LogOut />
                   Logout
                 </Button>
+                <ModeToggle />
               </div>
             </>
           ) : (

@@ -17,9 +17,10 @@ import { useRegisterMutation } from "@/services/authApi";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export function SignupForm({ ...props }) {
-  const [register] = useRegisterMutation();
+  const [register, { isSuccess, isError }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -30,7 +31,8 @@ export function SignupForm({ ...props }) {
     const password = formData.get("password");
     const confirmPassword = formData.get("confirmPassword");
     if (password !== confirmPassword) {
-      alert("passwor do not match!");
+      toast.error("Passwords do not match");
+      return;
     }
     try {
       await register({ name, email, password });
@@ -43,7 +45,13 @@ export function SignupForm({ ...props }) {
     if (userInfo) {
       navigate("/Home");
     }
-  }, [userInfo]);
+    if (isSuccess) {
+      toast.success("Account created successfully! Please sign in.");
+    }
+    if (isError) {
+      toast.error("Signup failed. Please try again.");
+    }
+  }, [userInfo, isSuccess, isError]);
 
   return (
     <Card {...props}>

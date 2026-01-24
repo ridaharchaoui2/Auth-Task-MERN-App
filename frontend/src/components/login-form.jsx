@@ -19,26 +19,37 @@ import { useLoginMutation } from "@/services/authApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "@/services/authSlice";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 export function LoginForm({ className, ...props }) {
   const { userInfo } = useSelector((state) => state.auth);
-  const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading, isSuccess, isError }] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     if (userInfo) {
       navigate("/Home");
     }
-  }, [userInfo]);
+    if (isSuccess) {
+      toast.success("Login successful!");
+    }
+    if (isError) {
+      toast.error("Login failed. Please check your credentials.");
+    }
+  }, [userInfo, isSuccess, isError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const res = await login({ email, password }).unwrap();
-    dispatch(setCredentials({ ...res }));
-    navigate("/Home");
+    try {
+      const formData = new FormData(e.currentTarget);
+      const email = formData.get("email");
+      const password = formData.get("password");
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate("/Home");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
