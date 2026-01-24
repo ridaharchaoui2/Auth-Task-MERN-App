@@ -2,13 +2,13 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { ModeToggle } from "@/components/mode-toggle";
 import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "@/services/authApi";
 import { removeCredentials } from "@/services/authSlice";
-import { LogOut } from "lucide-react";
+import { CircleUser, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import SwitchTheme from "./SwitchTheme";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 function NavBar() {
   const { userInfo } = useSelector((state) => state.auth);
@@ -38,7 +38,21 @@ function NavBar() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur ">
         <nav className="container mx-auto flex h-14 items-center justify-between px-4">
           {/* Left side - Two buttons */}
-          <div className="flex items-center gap-2"></div>
+          {userInfo && (
+            <div className="flex items-center gap-3">
+              <Avatar className="h-9 w-9">
+                <CircleUser size={32} />
+              </Avatar>
+              <div className="hidden flex-col sm:flex">
+                <p className="text-sm font-semibold text-foreground">
+                  {userInfo.name}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {userInfo.email}
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Center - Home link */}
           <div className="absolute left-1/2 -translate-x-1/2">
@@ -52,7 +66,6 @@ function NavBar() {
           {userInfo ? (
             <>
               <div className="flex items-center gap-2">
-                {userInfo.name}
                 <Button variant="outline" onClick={logoutHandler}>
                   <LogOut />
                   Logout
