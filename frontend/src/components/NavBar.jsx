@@ -9,6 +9,7 @@ import { CircleUser, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import SwitchTheme from "./SwitchTheme";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { SkeletonForm } from "./Skeleton";
 
 function NavBar() {
   const { userInfo } = useSelector((state) => state.auth);
@@ -32,13 +33,15 @@ function NavBar() {
       toast.error("Logout failed. Please try again.");
     }
   }, [isSuccess, isError]);
-
+  if (isLoading) {
+    return <SkeletonForm />;
+  }
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur ">
         <nav className="container mx-auto flex h-14 items-center justify-between px-4">
           {/* Left side - Two buttons */}
-          {userInfo && (
+          {userInfo ? (
             <div className="flex items-center gap-3">
               <Avatar className="h-9 w-9">
                 <CircleUser size={32} />
@@ -51,6 +54,10 @@ function NavBar() {
                   {userInfo.email}
                 </p>
               </div>
+            </div>
+          ) : (
+            <div>
+              <h1 className="text-lg font-semibold">Task App Manager</h1>
             </div>
           )}
 

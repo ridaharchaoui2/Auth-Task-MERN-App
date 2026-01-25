@@ -26,20 +26,14 @@ import { toast } from "sonner";
 
 function Tasks() {
   const { userInfo } = useSelector((state) => state.auth);
-  const {
-    data: tasks,
-    isLoading,
-    isFetching,
-    error,
-    refetch,
-  } = useGetAllTasksQuery();
+  const { data: tasks, isLoading, isFetching, refetch } = useGetAllTasksQuery();
   const [updateTask] = useUpdateTaskMutation();
   const [deleteTask] = useDeleteTaskMutation();
 
   // Refetch when user logs in
   useEffect(() => {
     if (userInfo) refetch();
-  }, [userInfo, refetch]);
+  }, [userInfo]);
 
   const handleStatusChange = async (taskId, completed) => {
     try {
@@ -64,9 +58,9 @@ function Tasks() {
   if (isLoading) {
     return <SkeletonForm />;
   }
-  if (isFetching) {
-    return <SkeletonForm />;
-  }
+  // if (isFetching) {
+  //   return <SkeletonForm />;
+  // }
 
   return (
     <>
@@ -95,7 +89,14 @@ function Tasks() {
           </div>
         </main>
       ) : (
-        <p>No tasks found</p>
+        <main className="min-h-screen flex flex-col items-center justify-center px-4">
+          <h2 className="mb-4 text-3xl font-semibold">No Tasks Found</h2>
+          <p className="mb-8 text-center text-muted-foreground">
+            You have no tasks at the moment. Click the button below to add your
+            first task.
+          </p>
+          <AddTask />
+        </main>
       )}
     </>
   );

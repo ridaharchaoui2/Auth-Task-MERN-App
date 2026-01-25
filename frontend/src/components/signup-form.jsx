@@ -18,9 +18,10 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { SkeletonForm } from "./Skeleton";
 
 export function SignupForm({ ...props }) {
-  const [register, { isSuccess, isError }] = useRegisterMutation();
+  const [register, { isSuccess, isError, isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
@@ -52,6 +53,9 @@ export function SignupForm({ ...props }) {
       toast.error("Signup failed. Please try again.");
     }
   }, [userInfo, isSuccess, isError]);
+  if (isLoading) {
+    return <SkeletonForm />;
+  }
 
   return (
     <Card {...props}>

@@ -11,7 +11,6 @@ export const taskApi = createApi({
     getAllTasks: builder.query({
       query: () => "/all",
       providesTags: ["Tasks"],
-      invalidatesTags: ["Tasks"],
     }),
     updateTask: builder.mutation({
       query: ({ id, ...body }) => ({

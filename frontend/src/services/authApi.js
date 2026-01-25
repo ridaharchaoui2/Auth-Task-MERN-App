@@ -15,14 +15,14 @@ export const authApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Tasks"],
+      invalidatesTags: ["Tasks", "User"],
     }),
     logout: builder.mutation({
       query: () => ({
         url: `${USER_URL}/logout`,
         method: "POST",
       }),
-      invalidatesTags: ["Tasks"],
+      invalidatesTags: ["Tasks", "User"],
     }),
     register: builder.mutation({
       query: (body) => ({
@@ -30,6 +30,7 @@ export const authApi = createApi({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["User"],
     }),
   }),
 });

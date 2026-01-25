@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 import { MoonIcon, SunIcon } from "lucide-react";
 
@@ -10,12 +10,14 @@ const SwitchTheme = () => {
   const [checked, setChecked] = useState(true);
 
   const toggleSwitch = () => setChecked((prev) => !prev);
-  const { setTheme } = useTheme();
-  if (checked) {
-    setTheme("dark");
-  } else {
-    setTheme("light");
-  }
+  const { setTheme } = useTheme("system");
+  useEffect(() => {
+    if (checked) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, [checked, setTheme]);
 
   return (
     <div

@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "@/services/authSlice";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { SkeletonForm } from "./Skeleton";
 
 export function LoginForm({ className, ...props }) {
   const { userInfo } = useSelector((state) => state.auth);
@@ -51,6 +52,9 @@ export function LoginForm({ className, ...props }) {
       console.error("Login failed:", error);
     }
   };
+  if (isLoading) {
+    return <SkeletonForm />;
+  }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>

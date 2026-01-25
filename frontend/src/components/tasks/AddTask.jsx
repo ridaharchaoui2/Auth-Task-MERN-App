@@ -68,9 +68,6 @@ export function AddTask() {
             {isError && (
               <p className="text-red-500 text-sm">Error adding task</p>
             )}
-            {isSuccess && (
-              <p className="text-green-500 text-sm">Task added successfully!</p>
-            )}
           </div>
           <DialogFooter className={"mt-8"}>
             <DialogClose asChild className="mr-1">
