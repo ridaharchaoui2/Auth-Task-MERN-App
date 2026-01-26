@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "./Navbar";
 import { Toaster } from "./ui/sonner";
+import NavBar from "./NavBar";
 
 const Layout = () => {
   return (
     <>
-      <Navbar />
+      <NavBar />
       <Toaster />
       <main>
         {/* The Outlet renders the child route's element */}
