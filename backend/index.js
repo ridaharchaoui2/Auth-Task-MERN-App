@@ -18,11 +18,27 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 // Middlewares
-const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://auth-task-mern-app-frontend.vercel.app",
+];
+
 app.use(
   cors({
-    origin: [allowedOrigin], // Allow the domain from env
-    methods: ["POST", "GET"],
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+
+      // Check if the origin matches our allowed list
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        // Optional: Just allow it anyway for debugging if you are stuck
+        // callback(null, true);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Added OPTIONS!
     credentials: true,
   }),
 );
