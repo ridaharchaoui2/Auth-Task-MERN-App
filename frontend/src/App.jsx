@@ -5,7 +5,7 @@ import Layout from "./components/Layout";
 import Signin from "./components/auth/Signin";
 import Signup from "./components/auth/Signup";
 import Home from "./components/Home";
-import Tasks from "./components/tasks/tasks";
+import Tasks from "./components/tasks/Tasks.jsx";
 import PrivateRoute from "./components/tasks/PrivateRoute";
 import PublicRoute from "./components/auth/PublicRoute";
 import NotFound from "./components/NotFound";
