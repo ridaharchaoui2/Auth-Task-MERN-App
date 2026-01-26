@@ -3,21 +3,7 @@ import {
   useGetAllTasksQuery,
   useUpdateTaskMutation,
 } from "@/services/taskApi";
-import { Trash2 } from "lucide-react";
-
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { TaskCard } from "./TaskCard";
 import { SkeletonForm } from "../Skeleton";

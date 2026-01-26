@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "./ui/button";
-import { ArrowRight } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
