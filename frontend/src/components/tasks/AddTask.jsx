@@ -18,18 +18,20 @@ import { toast } from "sonner";
 
 export function AddTask() {
   const [addTask, { isLoading, isError, isSuccess }] = useAddTaskMutation();
-  const formRef = useRef(null);
   const dialogCloseRef = useRef(null);
+  const titleRef = useRef(null);
+  const descriptionRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const title = formData.get("title");
-    const description = formData.get("description");
+
     try {
-      await addTask({ title, description }).unwrap();
+      await addTask({
+        title: titleRef.current.value,
+        description: descriptionRef.current.value,
+      }).unwrap();
       toast.success("Task added successfully!");
-      formRef.current?.reset();
+
       dialogCloseRef.current?.click();
     } catch (error) {
       toast.error("Failed to add task. Please try again.");
@@ -45,7 +47,7 @@ export function AddTask() {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
-        <form onSubmit={handleSubmit} ref={formRef}>
+        <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="flex justify-center">
               Add a Task
@@ -55,7 +57,12 @@ export function AddTask() {
           <div className="grid gap-6">
             <div className="grid gap-4">
               <Label htmlFor="title">Title</Label>
-              <Input id="title" name="title" placeholder="Task Title" />
+              <Input
+                id="title"
+                name="title"
+                ref={titleRef}
+                placeholder="Task Title"
+              />
             </div>
             <div className="grid gap-4">
               <Label htmlFor="description">Description</Label>
@@ -63,6 +70,7 @@ export function AddTask() {
                 id="description"
                 name="description"
                 placeholder="Task Description"
+                ref={descriptionRef}
               />
             </div>
             {isError && (

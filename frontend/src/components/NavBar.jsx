@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import { removeCredentials } from "@/services/authSlice";
 import { CircleUser, LogOut } from "lucide-react";
 import { toast } from "sonner";
 import SwitchTheme from "./SwitchTheme";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar } from "./ui/avatar";
 import { SkeletonForm } from "./Skeleton";
 
 function NavBar() {

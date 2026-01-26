@@ -5,17 +5,24 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoute.js";
 import taskRouter from "./routes/taskRoute.js";
 import cors from "cors";
+import { fileURLToPath } from "url";
+import path from "path";
+
 // Load environment variables
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
 connectDB();
 // Server setup
 const PORT = process.env.PORT || 8000;
 const app = express();
 
 // Middlewares
+const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [allowedOrigin], // Allow the domain from env
+    methods: ["POST", "GET"],
     credentials: true,
   }),
 );
@@ -29,6 +36,8 @@ app.use("/api/tasks", taskRouter);
 app.get("/", (req, res) => {
   res.send("Route is working");
 });
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+if (process.argv[1] === __filename) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}

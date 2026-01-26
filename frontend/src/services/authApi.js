@@ -1,13 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { apiSlice } from "./apiSlice";
 
-const USER_URL = "/api/users";
-export const authApi = createApi({
-  reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/",
-    credentials: "include", // This enables cookies
-  }),
-  tagTypes: ["User", "Tasks"],
+const USER_URL = "/users";
+
+export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (body) => ({
@@ -22,7 +17,7 @@ export const authApi = createApi({
         url: `${USER_URL}/logout`,
         method: "POST",
       }),
-      invalidatesTags: ["Tasks", "User"],
+      invalidatesTags: ["User"],
     }),
     register: builder.mutation({
       query: (body) => ({
