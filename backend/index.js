@@ -18,27 +18,15 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 // Middlewares
-const allowedOrigins = [
-  "https://auth-task-mern-app-frontend.vercel.app",
-  "http://localhost:5173",
-];
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS not allowed"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-);
-
-app.options(/.*/, cors());
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions)); // handle preflight
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
