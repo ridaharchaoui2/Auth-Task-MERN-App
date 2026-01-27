@@ -46,7 +46,7 @@ app.use("/api/users", userRouter);
 app.use("/api/tasks", taskRouter);
 // Test route
 app.get("/", (req, res) => {
-  res.send("Route is working");
+  res.send("Route is working - Updated");
 });
 if (process.argv[1] === __filename) {
   app.listen(PORT, () => {
