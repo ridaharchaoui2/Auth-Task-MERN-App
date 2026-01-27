@@ -19,10 +19,9 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 // Middlewares
-//const allowedOrigins = ["https://task-mern-app-frontend.vercel.app"];
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://auth-task-mern-app-frontend.vercel.app"
+  "https://auth-task-mern-app-frontend.vercel.app",
 ];
 
 app.use(
@@ -33,6 +32,8 @@ app.use(
       return cb(new Error("CORS blocked: " + origin));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
