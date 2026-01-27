@@ -20,7 +20,10 @@ const app = express();
 
 // Middlewares
 //const allowedOrigins = ["https://task-mern-app-frontend.vercel.app"];
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://auth-task-mern-app-frontend.vercel.app"
+];
 
 app.use(
   cors({
