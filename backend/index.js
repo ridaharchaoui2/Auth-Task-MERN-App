@@ -18,31 +18,7 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 // Middlewares
-// 1. Define allowed origins
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://auth-task-mern-app-frontend.vercel.app",
-];
-
-// 2. Configure CORS options
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-};
-
-// 3. APPLY CORS BEFORE ANYTHING ELSE
-app.use(cors(corsOptions));
-
-// 4. Explicitly handle Preflight for all routes
-app.options("*", cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
