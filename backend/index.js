@@ -32,9 +32,30 @@ const corsOptions = {
     return cb(new Error("CORS blocked: " + origin));
   },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
 };
+
+// Handle CORS and preflight explicitly to satisfy Vercel/Express 5
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (!origin || allowedOrigins.includes(origin)) {
+    if (origin) res.header("Access-Control-Allow-Origin", origin);
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET,POST,PUT,DELETE,PATCH,OPTIONS",
+    );
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Content-Type,Authorization,X-Requested-With",
+    );
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(204);
+    }
+  } else {
+    return res.status(403).send("CORS blocked: " + origin);
+  }
+  next();
+});
 
 app.use(cors(corsOptions));
 
