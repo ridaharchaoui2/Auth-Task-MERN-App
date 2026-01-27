@@ -39,14 +39,14 @@ function NavBar() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur ">
-        <nav className="container mx-auto flex h-14 items-center justify-between px-4">
-          {/* Left side - Two buttons */}
+        <nav className="container mx-auto flex h-14 items-center justify-between gap-2 px-2 sm:gap-4 sm:px-4">
+          {/* Left side */}
           {userInfo ? (
-            <div className="flex items-center gap-3">
-              <Avatar className="h-9 w-9">
-                <CircleUser size={32} />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Avatar className="h-8 w-8 sm:h-9 sm:w-9">
+                <CircleUser className="h-8 w-8 sm:h-9 sm:w-9" />
               </Avatar>
-              <div className="hidden flex-col sm:flex">
+              <div className="hidden flex-col md:flex">
                 <p className="text-sm font-semibold text-foreground">
                   {userInfo.name}
                 </p>
@@ -56,13 +56,13 @@ function NavBar() {
               </div>
             </div>
           ) : (
-            <div>
-              <h1 className="text-lg font-semibold">Task App Manager</h1>
+            <div className="flex-shrink-0">
+              <h1 className="text-sm font-semibold sm:text-lg">Task Manager</h1>
             </div>
           )}
 
           {/* Center - Home link */}
-          <div className="absolute left-1/2 -translate-x-1/2">
+          <div className="hidden sm:absolute sm:left-1/2 sm:block sm:-translate-x-1/2">
             <Link
               to="/Home"
               className="text-lg font-semibold transition-colors hover:text-foreground/80"
@@ -70,29 +70,35 @@ function NavBar() {
               Home
             </Link>
           </div>
+
+          {/* Right side */}
           {userInfo ? (
-            <>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" onClick={logoutHandler}>
-                  <LogOut />
-                  Logout
-                </Button>
-                <SwitchTheme />
-              </div>
-            </>
+            <div className="flex items-center gap-1 sm:gap-2">
+              <Button
+                variant="outline"
+                onClick={logoutHandler}
+                size="sm"
+                className="sm:size-default"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline">Logout</span>
+              </Button>
+              <SwitchTheme />
+            </div>
           ) : (
-            <>
-              {/* Right side - Mode toggle */}
-              <div className="flex items-center gap-2">
-                <Button variant="ghost">
-                  <Link to="/signin">Sign in</Link>
-                </Button>
-                <Button variant="ghost">
-                  <Link to="/signup">Sign up</Link>
-                </Button>
-                <SwitchTheme />
-              </div>
-            </>
+            <div className="flex items-center gap-1 sm:gap-2">
+              <Button variant="ghost" size="sm" className="sm:size-default">
+                <Link to="/signin">Sign in</Link>
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="hidden sm:inline-flex"
+              >
+                <Link to="/signup">Sign up</Link>
+              </Button>
+              <SwitchTheme />
+            </div>
           )}
         </nav>
       </header>
