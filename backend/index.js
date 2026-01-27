@@ -5,21 +5,35 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoute.js";
 import taskRouter from "./routes/taskRoute.js";
 import cors from "cors";
-import { fileURLToPath } from "url";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename); // optional, only if you need it
 
 // Load environment variables
 dotenv.config();
-
-const __filename = fileURLToPath(import.meta.url);
 connectDB();
 // Server setup
 const PORT = process.env.PORT || 8000;
 const app = express();
 
 // Middlewares
+//const allowedOrigins = ["https://task-mern-app-frontend.vercel.app"];
+const allowedOrigins = ["http://localhost:5173"];
 
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true); // allow server-to-server/tools
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+      return cb(new Error("CORS blocked: " + origin));
+    },
+    credentials: true,
+  }),
+);
+
+app.options("/*splat", cors()); // handle preflight
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
