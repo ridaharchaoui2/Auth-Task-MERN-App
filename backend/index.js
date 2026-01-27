@@ -18,7 +18,15 @@ const PORT = process.env.PORT || 8000;
 const app = express();
 
 // Middlewares
-app.use(cors());
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions)); // handle preflight
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
