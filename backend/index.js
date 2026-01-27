@@ -17,6 +17,7 @@ connectDB();
 // Server setup
 const PORT = process.env.PORT || 8000;
 const app = express();
+const isVercel = process.env.VERCEL === "1";
 
 // Middlewares
 const allowedOrigins = [
@@ -47,8 +48,12 @@ app.use("/api/tasks", taskRouter);
 app.get("/", (req, res) => {
   res.send("Route is working - Updated");
 });
-if (process.argv[1] === __filename) {
+
+// Local dev server; on Vercel we export the handler instead
+if (!isVercel && process.argv[1] === __filename) {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 }
+
+export default app;
