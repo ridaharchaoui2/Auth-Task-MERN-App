@@ -7,13 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "@/services/authApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,23 +16,25 @@ import { setCredentials } from "@/services/authSlice";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { SkeletonForm } from "./Skeleton";
+import { Loader2, LockKeyhole, Mail } from "lucide-react";
 
 export function LoginForm({ className, ...props }) {
   const { userInfo } = useSelector((state) => state.auth);
   const [login, { isLoading, isSuccess, isError }] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (userInfo) {
       navigate("/Home");
     }
     if (isSuccess) {
-      toast.success("Login successful!");
+      toast.success("Welcome back!");
     }
     if (isError) {
-      toast.error("Login failed. Please check your credentials.");
+      toast.error("Invalid email or password.");
     }
-  }, [userInfo, isSuccess, isError]);
+  }, [userInfo, isSuccess, isError, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,53 +49,120 @@ export function LoginForm({ className, ...props }) {
       console.error("Login failed:", error);
     }
   };
+
   if (isLoading) {
-    return <SkeletonForm />;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <SkeletonForm />
+      </div>
+    );
   }
+
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+    <div
+      className={cn("mx-auto w-full max-w-[450px] space-y-6 px-4", className)}
+      {...props}
+    >
+      <div className="flex flex-col items-center space-y-2 text-center">
+        {/* Brand Icon or Logo placeholder */}
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg mb-2">
+          <LockKeyhole className="h-6 w-6" />
+        </div>
+        <h1 className="text-3xl font-extrabold tracking-tight">Welcome Back</h1>
+        <p className="text-muted-foreground">
+          Enter your credentials to access your dashboard
+        </p>
+      </div>
+
+      <Card className="border-none shadow-2xl bg-background/60 backdrop-blur-xl">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-xl">Sign In</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Choose your preferred way to log in.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-4">
+              {/* Email Field */}
+              <div className="space-y-2">
+                <Label htmlFor="email">Email Address</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="name@example.com"
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <Link
+                    to="/forgot-password"
+                    className="text-xs font-medium text-primary hover:underline underline-offset-4"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
                 <Input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="m@example.com"
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="••••••••"
                   required
                 />
-              </Field>
-              <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input id="password" name="password" type="password" required />
-              </Field>
-              <Field>
-                <Button type="submit">Login</Button>
-                <FieldDescription className="text-center">
-                  Don&apos;t have an account? <Link to="/signup">Sign up</Link>
-                </FieldDescription>
-              </Field>
-            </FieldGroup>
+              </div>
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                className="w-full h-11 text-base font-semibold transition-all hover:translate-y-[-1px]"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Authenticating...
+                  </>
+                ) : (
+                  "Sign In"
+                )}
+              </Button>
+            </div>
           </form>
+
+          <div className="mt-6 text-center text-sm">
+            <span className="text-muted-foreground">
+              Don't have an account?{" "}
+            </span>
+            <Link
+              to="/signup"
+              className="font-semibold text-primary hover:underline underline-offset-4"
+            >
+              Create an account
+            </Link>
+          </div>
         </CardContent>
       </Card>
+
+      <p className="px-8 text-center text-xs text-muted-foreground">
+        By clicking continue, you agree to our{" "}
+        <a href="#" className="underline underline-offset-4 hover:text-primary">
+          Terms of Service
+        </a>{" "}
+        and{" "}
+        <a href="#" className="underline underline-offset-4 hover:text-primary">
+          Privacy Policy
+        </a>
+        .
+      </p>
     </div>
   );
 }

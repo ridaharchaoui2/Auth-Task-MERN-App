@@ -119,9 +119,9 @@ function NavBar() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={logoutHandler}
-                    className="cursor-pointer py-4 text-lg font-bold text-destructive focus:bg-destructive focus:text-destructive-foreground"
+                    className="cursor-pointer py-4 text-lg font-bold text-destructive focus:bg-destructive focus:text-white"
                   >
-                    <LogOut className="mr-3 h-5 w-5" /> Logout
+                    <LogOut className="mr-3 h-5 w-5 focus:text-white" /> Logout
                   </DropdownMenuItem>
                 </>
               ) : (

@@ -1,11 +1,6 @@
-import { Trash2 } from "lucide-react";
+import { Trash2, CheckCircle2, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -20,6 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export function TaskCard({
   taskId,
@@ -35,59 +31,81 @@ export function TaskCard({
     await onDelete(taskId);
     setIsDeleteDialogOpen(false);
   };
+
   return (
     <Card
-      className="flex flex-col   bg-gray-100 dark:bg-black           // Inverted background
-                                 border-gray-700 dark:border-gray-400   // Inverted border
-      p-4 rounded-lg shadow-md "
+      className={cn(
+        "group relative flex flex-col transition-all duration-300 hover:shadow-lg border-l-4",
+        completed
+          ? "border-l-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/10"
+          : "border-l-amber-400 bg-background",
+      )}
     >
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between gap-2">
-          <h3 className="font-semibold text-2xl ">{title}</h3>
+      <div className="p-5 flex-1">
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-2">
+            {completed ? (
+              <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+            ) : (
+              <Circle className="h-5 w-5 text-amber-500" />
+            )}
+            <h3
+              className={cn(
+                "font-bold text-lg leading-none tracking-tight",
+                completed && "text-muted-foreground line-through",
+              )}
+            >
+              {title}
+            </h3>
+          </div>
           <Badge
-            variant={completed ? "default" : "secondary"}
-            className={
+            variant="outline"
+            className={cn(
+              "font-medium px-2 py-0.5",
               completed
-                ? "bg-emerald-500 text-black "
-                : "bg-amber-300 dark:text-black"
-            }
+                ? "border-emerald-500/50 text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20"
+                : "border-amber-500/50 text-amber-600 bg-amber-50 dark:bg-amber-900/20",
+            )}
           >
-            {completed ? "Completed" : "Pending"}
+            {completed ? "Done" : "To Do"}
           </Badge>
         </div>
-      </CardHeader>
-      <CardContent className="flex-1 pb-4">
-        <p className="text-sm ">{description}</p>
-      </CardContent>
-      <CardFooter className="flex items-center justify-between pt-0">
-        <div className="flex items-center gap-2">
+
+        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
+          {description}
+        </p>
+      </div>
+
+      <CardFooter className="px-5 py-4 bg-muted/30 border-t flex items-center justify-between">
+        <div className="flex items-center gap-3">
           <Switch
             checked={completed}
             onCheckedChange={onStatusChange}
-            className="data-[state=unchecked]:bg-gray-400 dark:data-[state=unchecked]:bg-gray-800 "
+            className="data-[state=checked]:bg-emerald-500"
           />
-          <span className="text-sm text-muted-foreground">
-            {completed ? "Completed" : "Mark complete"}
+          <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            {completed ? "Completed" : "Active"}
           </span>
         </div>
+
         <AlertDialog
           open={isDeleteDialogOpen}
           onOpenChange={setIsDeleteDialogOpen}
         >
           <AlertDialogTrigger asChild>
-            <Button variant="" size="sm" className="gap-1.5 ">
-              <Trash2 className="h-3.5 w-3.5 " />
-              Delete
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+            >
+              <Trash2 className="h-4 w-4" />
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <div className="flex items-center gap-2">
-                <Trash2 className="size-5 text-destructive" />
-                <AlertDialogTitle>Delete Task</AlertDialogTitle>
-              </div>
+              <AlertDialogTitle>Delete this task?</AlertDialogTitle>
               <AlertDialogDescription>
-                This will permanently delete the task. This action cannot be
+                This will permanently remove "{title}". This action cannot be
                 undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
@@ -95,9 +113,9 @@ export function TaskCard({
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleConfirmDelete}
-                className="bg-destructive  hover:bg-destructive/90"
+                className="bg-destructive hover:bg-destructive/90"
               >
-                Delete Task
+                Delete
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
