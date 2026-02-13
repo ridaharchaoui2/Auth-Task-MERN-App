@@ -62,6 +62,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 // Routes
 app.use("/api/users", userRouter);
 app.use("/api/tasks", taskRouter);

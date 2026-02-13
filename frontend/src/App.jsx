@@ -9,6 +9,7 @@ import Tasks from "./components/tasks/Tasks.jsx";
 import PrivateRoute from "./components/tasks/PrivateRoute";
 import PublicRoute from "./components/auth/PublicRoute";
 import NotFound from "./components/NotFound";
+import Profile from "./components/user/Profile";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="" element={<PrivateRoute />}>
               <Route path="/Home" element={<Tasks />} />
+              <Route path="/profile/:id" element={<Profile />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

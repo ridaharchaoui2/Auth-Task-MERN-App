@@ -16,6 +16,12 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    avatar: {
+      url: {
+        type: String,
+        default: "", // Frontend will use initials if this is empty
+      },
+    },
   },
   {
     timestamps: true,
@@ -25,7 +31,7 @@ const userSchema = mongoose.Schema(
 userSchema.pre("save", async function (next) {
   //hash password only if it is modified or new
   if (!this.isModified("password")) {
-    next();
+    return;
   }
   //hash password
   const salt = await bcrypt.genSalt(10);
