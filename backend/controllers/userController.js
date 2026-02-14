@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
+import { logActivity } from "../utils/activityLogger.js";
 
 //Login user & get token
 const loginUser = asyncHandler(async (req, res) => {
@@ -12,7 +13,11 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      avatar: user.avatar,
+      isAdmin: user.isAdmin,
     });
+    // LOG THE EVENT
+    await logActivity("user_signin", user.name, "User logged in");
   } else {
     res.status(401).json({ message: "Invalid email or password" });
   }
@@ -32,6 +37,8 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
     });
+    // LOG THE EVENT
+    await logActivity("user_signup", user.name, "User registered");
   } else {
     res.status(400).json({ message: "Invalid user data" });
   }

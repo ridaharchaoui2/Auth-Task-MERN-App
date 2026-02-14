@@ -26,7 +26,11 @@ export function LoginForm({ className, ...props }) {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/Home");
+      if (userInfo.isAdmin) {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/Home");
+      }
     }
     if (isSuccess) {
       toast.success("Welcome back!");
@@ -44,7 +48,11 @@ export function LoginForm({ className, ...props }) {
       const password = formData.get("password");
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
-      navigate("/Home");
+      if (res.isAdmin) {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/Home");
+      }
     } catch (error) {
       console.error("Login failed:", error);
     }

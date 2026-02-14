@@ -10,6 +10,9 @@ import PrivateRoute from "./components/tasks/PrivateRoute";
 import PublicRoute from "./components/auth/PublicRoute";
 import NotFound from "./components/NotFound";
 import Profile from "./components/user/Profile";
+import AdminRoute from "./components/admin/AdminRoute";
+import Dashboard from "./components/admin/Dashboard";
+import UserManagement from "./components/admin/UserManagement";
 
 function App() {
   return (
@@ -25,6 +28,10 @@ function App() {
             <Route path="" element={<PrivateRoute />}>
               <Route path="/Home" element={<Tasks />} />
               <Route path="/profile/:id" element={<Profile />} />
+            </Route>
+            <Route path="" element={<AdminRoute />}>
+              <Route path="/admin/dashboard" element={<Dashboard />} />
+              <Route path="/admin/users" element={<UserManagement />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

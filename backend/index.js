@@ -4,6 +4,7 @@ import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoute.js";
 import taskRouter from "./routes/taskRoute.js";
+import adminRouter from "./routes/adminRoute.js";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -66,6 +67,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/users", userRouter);
 app.use("/api/tasks", taskRouter);
+app.use("/api/admin", adminRouter);
 // Test route
 app.get("/", (req, res) => {
   res.send("Route is working - Updated");

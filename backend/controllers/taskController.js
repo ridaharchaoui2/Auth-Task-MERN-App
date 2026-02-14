@@ -1,5 +1,6 @@
 import Task from "../models/taskModel.js";
 import asyncHandler from "express-async-handler";
+import { logActivity } from "../utils/activityLogger.js";
 
 //create a new task
 const createTask = asyncHandler(async (req, res) => {
@@ -14,6 +15,12 @@ const createTask = asyncHandler(async (req, res) => {
     description,
   });
   if (task) {
+    // LOG THE EVENT DYNAMICALLY
+    await logActivity(
+      "task_created",
+      req.user.name,
+      `Created task: ${task.title}`,
+    );
     res.status(201).json(task);
   } else {
     res.status(400).json({ message: "Invalid task data" });
@@ -38,6 +45,12 @@ const updateTask = asyncHandler(async (req, res) => {
   if (!updatedtask) {
     res.status(404).json({ message: "Task not found" });
   } else {
+    // LOG THE EVENT
+    await logActivity(
+      "task_updated",
+      req.user.name,
+      `Updated task ID: ${req.params.id}`,
+    );
     res.status(200).json(updatedtask);
   }
 });
