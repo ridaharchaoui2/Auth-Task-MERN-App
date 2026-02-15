@@ -32,10 +32,26 @@ const registerUser = asyncHandler(async (req, res) => {
     const verifyUrl = `${process.env.FRONTEND_URL}/verify-email/${verificationToken}`;
 
     const message = `
-      <h1>Email Verification</h1>
-      <p>Please verify your email to continue.</p>
-      <a href="${verifyUrl}" clicktracking=off>${verifyUrl}</a>
-    `;
+  <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e4e4e7; border-radius: 8px;">
+    <h2 style="color: #18181b; margin-bottom: 16px;">Verify your email address</h2>
+    <p style="color: #71717a; font-size: 16px; line-height: 24px; margin-bottom: 24px;">
+      Thanks for signing up! To get started with your Task Management App, please verify your email address by clicking the button below.
+    </p>
+    <a href="${verifyUrl}" 
+       style="display: inline-block; background-color: #18181b; color: #ffffff; padding: 12px 24px; font-weight: 500; font-size: 14px; text-decoration: none; border-radius: 6px;"
+       clicktracking=off>
+       Verify Email
+    </a>
+    <hr style="margin-top: 32px; border: 0; border-top: 1px solid #e4e4e7;" />
+    <p style="color: #a1a1aa; font-size: 12px; margin-top: 16px;">
+      If the button doesn't work, copy and paste this link into your browser: <br />
+      <span style="color: #2563eb;">${verifyUrl}</span>
+    </p>
+    <p style="color: #a1a1aa; font-size: 12px;">
+      This link will expire in 24 hours. If you did not create an account, no further action is required.
+    </p>
+  </div>
+`;
 
     try {
       await sendEmail({

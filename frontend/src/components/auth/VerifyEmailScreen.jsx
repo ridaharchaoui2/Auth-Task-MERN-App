@@ -74,11 +74,11 @@ const VerifyEmailScreen = () => {
         <CardFooter className="flex justify-center border-t pt-6">
           {isSuccess ? (
             <Button asChild className="w-full">
-              <Link to="/login">Go to Login</Link>
+              <Link to="/signin">Go to Login</Link>
             </Button>
           ) : isError ? (
             <Button asChild variant="outline" className="w-full">
-              <Link to="/register">Back to Signup</Link>
+              <Link to="/signup">Back to Signup</Link>
             </Button>
           ) : null}
         </CardFooter>
