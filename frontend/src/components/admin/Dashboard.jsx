@@ -37,16 +37,16 @@ function AdminDashboard() {
     data: users,
     isLoading: usersLoading,
     isError: usersError,
-  } = useGetAllUsersQuery(undefined, { pollingInterval: 30000 });
+  } = useGetAllUsersQuery(undefined, { pollingInterval: 60000 });
 
   const {
     data: tasks,
     isLoading: tasksLoading,
     isError: tasksError,
-  } = useGetAllAdminTasksQuery(undefined, { pollingInterval: 30000 });
+  } = useGetAllAdminTasksQuery(undefined, { pollingInterval: 60000 });
 
   const { data: dynamicStats, isLoading: statsLoading } =
-    useGetEngagementStatsQuery(undefined, { pollingInterval: 1000 });
+    useGetEngagementStatsQuery(undefined, { pollingInterval: 60000 });
 
   const totalTasks = tasks?.length || 0;
   const completedTasks = tasks?.filter((task) => task.completed).length || 0;
