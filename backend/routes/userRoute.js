@@ -5,6 +5,7 @@ import {
   logoutUser,
   registerUser,
   updateUserProfile,
+  verifyEmail,
 } from "../controllers/userController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 import { upload } from "../middlewares/uploadMiddleware.js";
@@ -15,6 +16,8 @@ const router = express.Router();
 router.post("/login", loginUser);
 router.post("/register", registerUser);
 router.post("/logout", logoutUser);
+// This matches the Backend API call your Frontend will make
+router.post("/verify-email/:token", verifyEmail);
 router
   .route("/profile/:id")
   .get(protect, getUserProfile)

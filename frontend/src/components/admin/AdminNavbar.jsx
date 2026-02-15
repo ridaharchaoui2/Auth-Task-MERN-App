@@ -24,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useLogoutMutation } from "@/services/authApi";
 import { removeCredentials } from "@/services/authSlice";
+import SwitchTheme from "../SwitchTheme";
 
 function AdminNavbar() {
   const { userInfo } = useSelector((state) => state.auth);
@@ -108,6 +109,9 @@ function AdminNavbar() {
         </div>
 
         {/* RIGHT: ACTIONS & PROFILE */}
+        <div className="scale-90 sm:scale-110">
+          <SwitchTheme />
+        </div>
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -152,6 +156,14 @@ function AdminNavbar() {
               <DropdownMenuItem asChild>
                 <Link to="/Home" className="cursor-pointer">
                   Switch to User View
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  to={`/profile/${userInfo._id}`}
+                  className="cursor-pointer"
+                >
+                  Profile
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem

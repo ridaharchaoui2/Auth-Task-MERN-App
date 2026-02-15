@@ -31,30 +31,38 @@ const deleteUser = asyncHandler(async (req, res) => {
 const getEngagementStats = async (req, res) => {
   try {
     const last7Days = new Date();
-    last7Days.setDate(last7Days.getDate() - 7);
+    // Set to 7 days ago, starting at 00:00:00 to catch all of today
+    last7Days.setDate(last7Days.getDate() - 6);
+    last7Days.setHours(0, 0, 0, 0);
 
-    // Assuming you have an Activity model that logs 'user_signup', 'task_created', 'task_deleted'
     const stats = await Activity.aggregate([
       { $match: { createdAt: { $gte: last7Days } } },
       {
         $group: {
           _id: {
-            day: { $dayOfWeek: "$createdAt" },
+            // Group by day of year or exact date string to keep them unique
+            day: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
             type: "$type",
           },
           count: { $sum: 1 },
         },
       },
-      { $sort: { "_id.day": 1 } },
     ]);
 
     const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const formattedData = [];
 
-    // Transform the flat MongoDB results into a Recharts-friendly array
-    const formattedData = dayNames.map((day, index) => {
-      const dayEntries = stats.filter((s) => s._id.day === index + 1);
-      return {
-        name: day,
+    // Generate the last 7 days ending with TODAY
+    for (let i = 0; i < 7; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() - (6 - i));
+      const dateString = date.toISOString().split("T")[0];
+      const dayName = dayNames[date.getDay()];
+
+      const dayEntries = stats.filter((s) => s._id.day === dateString);
+
+      formattedData.push({
+        name: dayName,
         signups:
           dayEntries.find((e) => e._id.type === "user_signup")?.count || 0,
         signins:
@@ -63,8 +71,8 @@ const getEngagementStats = async (req, res) => {
           dayEntries.find((e) => e._id.type === "task_created")?.count || 0,
         updated:
           dayEntries.find((e) => e._id.type === "task_updated")?.count || 0,
-      };
-    });
+      });
+    }
 
     res.status(200).json(formattedData);
   } catch (error) {

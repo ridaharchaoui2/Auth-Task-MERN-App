@@ -48,7 +48,9 @@ export function SignupForm({ className, ...props }) {
       navigate("/Home");
     }
     if (isSuccess) {
-      toast.success("Account created successfully! Please sign in.");
+      toast.success(
+        "Account created successfully! Please check your email to verify.",
+      );
     }
     if (isError) {
       toast.error("Signup failed. That email might already be in use.");

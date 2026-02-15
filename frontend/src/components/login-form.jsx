@@ -53,8 +53,8 @@ export function LoginForm({ className, ...props }) {
       } else {
         navigate("/Home");
       }
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch (err) {
+      toast.error(err?.data?.message || "Invalid email or password");
     }
   };
 

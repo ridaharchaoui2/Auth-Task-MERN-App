@@ -27,6 +27,13 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    verifyEmail: builder.mutation({
+      query: (token) => ({
+        url: `${USER_URL}/verify-email/${token}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["User"],
+    }),
     getUserProfile: builder.query({
       query: (id) => `${USER_URL}/profile/${id}`,
       providesTags: ["User"],
@@ -59,4 +66,5 @@ export const {
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
   useUploadAvatarMutation,
+  useVerifyEmailMutation,
 } = authApi;

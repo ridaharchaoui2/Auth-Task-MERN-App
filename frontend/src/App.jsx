@@ -13,6 +13,7 @@ import Profile from "./components/user/Profile";
 import AdminRoute from "./components/admin/AdminRoute";
 import Dashboard from "./components/admin/Dashboard";
 import UserManagement from "./components/admin/UserManagement";
+import VerifyEmailScreen from "./components/auth/VerifyEmailScreen";
 
 function App() {
   return (
@@ -25,6 +26,10 @@ function App() {
             </Route>
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
+            <Route
+              path="/verify-email/:token"
+              element={<VerifyEmailScreen />}
+            />
             <Route path="" element={<PrivateRoute />}>
               <Route path="/Home" element={<Tasks />} />
               <Route path="/profile/:id" element={<Profile />} />

@@ -27,6 +27,12 @@ const userSchema = mongoose.Schema(
         default: "", // Frontend will use initials if this is empty
       },
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: String,
+    verificationTokenExpires: Date,
   },
   {
     timestamps: true,
