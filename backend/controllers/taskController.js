@@ -4,7 +4,7 @@ import { logActivity } from "../utils/activityLogger.js";
 
 //create a new task
 const createTask = asyncHandler(async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, dueDate, priority } = req.body;
   if (!title || !description) {
     res.status(400).json({ message: "Please provide all required fields" });
     return;
@@ -13,6 +13,8 @@ const createTask = asyncHandler(async (req, res) => {
     user: req.user._id,
     title,
     description,
+    dueDate: dueDate || new Date(),
+    priority: priority || "Medium",
   });
   if (task) {
     // LOG THE EVENT DYNAMICALLY
@@ -36,10 +38,10 @@ const deleteTask = asyncHandler(async (req, res) => {
 });
 //update a task
 const updateTask = asyncHandler(async (req, res) => {
-  const { title, description, completed } = req.body;
+  const { title, description, completed, dueDate } = req.body;
   const updatedtask = await Task.findByIdAndUpdate(
     req.params.id,
-    { title, description, completed },
+    { title, description, completed, dueDate },
     { new: true, runValidators: true },
   );
   if (!updatedtask) {

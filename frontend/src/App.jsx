@@ -13,6 +13,8 @@ import Profile from "./components/user/Profile";
 import AdminRoute from "./components/admin/AdminRoute";
 import Dashboard from "./components/admin/Dashboard";
 import UserManagement from "./components/admin/UserManagement";
+import SystemTasks from "./components/admin/SystemTasks";
+import AdminSettings from "./components/admin/AdminSettings";
 import VerifyEmailScreen from "./components/auth/VerifyEmailScreen";
 
 function App() {
@@ -37,6 +39,8 @@ function App() {
             <Route path="" element={<AdminRoute />}>
               <Route path="/admin/dashboard" element={<Dashboard />} />
               <Route path="/admin/users" element={<UserManagement />} />
+              <Route path="/admin/all-tasks" element={<SystemTasks />} />
+              <Route path="/admin/settings" element={<AdminSettings />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

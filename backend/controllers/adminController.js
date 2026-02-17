@@ -79,4 +79,68 @@ const getEngagementStats = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
-export { getAllUsers, getAllTasks, deleteUser, getEngagementStats };
+
+// Admin delete any task
+const deleteTaskAdmin = asyncHandler(async (req, res) => {
+  const task = await Task.findByIdAndDelete(req.params.id);
+  if (!task) {
+    return res.status(404).json({ message: "Task not found" });
+  }
+  res.status(200).json({ message: "Task deleted successfully" });
+});
+
+// Admin update any task
+const updateTaskAdmin = asyncHandler(async (req, res) => {
+  const updateFields = {};
+  if (req.body.title !== undefined) updateFields.title = req.body.title;
+  if (req.body.description !== undefined)
+    updateFields.description = req.body.description;
+  if (req.body.completed !== undefined)
+    updateFields.completed = req.body.completed;
+  if (req.body.priority !== undefined)
+    updateFields.priority = req.body.priority;
+  if (req.body.dueDate !== undefined) updateFields.dueDate = req.body.dueDate;
+
+  const task = await Task.findByIdAndUpdate(req.params.id, updateFields, {
+    new: true,
+    runValidators: true,
+  });
+  if (!task) {
+    return res.status(404).json({ message: "Task not found" });
+  }
+  res.status(200).json(task);
+});
+
+// Admin get system stats for settings page
+const getSystemStats = asyncHandler(async (req, res) => {
+  const totalUsers = await User.countDocuments();
+  const verifiedUsers = await User.countDocuments({ isVerified: true });
+  const totalTasks = await Task.countDocuments();
+  const completedTasks = await Task.countDocuments({ completed: true });
+  const totalActivities = await Activity.countDocuments();
+
+  res.status(200).json({
+    totalUsers,
+    verifiedUsers,
+    totalTasks,
+    completedTasks,
+    totalActivities,
+  });
+});
+
+// Admin clear all activity logs
+const clearActivityLogs = asyncHandler(async (req, res) => {
+  await Activity.deleteMany({});
+  res.status(200).json({ message: "All activity logs cleared" });
+});
+
+export {
+  getAllUsers,
+  getAllTasks,
+  deleteUser,
+  getEngagementStats,
+  deleteTaskAdmin,
+  updateTaskAdmin,
+  getSystemStats,
+  clearActivityLogs,
+};

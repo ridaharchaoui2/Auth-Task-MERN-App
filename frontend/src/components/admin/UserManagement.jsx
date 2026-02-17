@@ -10,6 +10,17 @@ import {
   ArrowUpDown,
   Mail,
 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { SkeletonForm } from "../Skeleton";
 import {
   useDeleteUserMutation,
@@ -27,11 +38,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 
 function UserManagement() {
   const { data: users, isLoading, error } = useGetAllUsersQuery();
   const [deleteUser] = useDeleteUserMutation();
   const [searchTerm, setSearchTerm] = useState("");
+  const [userToDelete, setUserToDelete] = useState(null);
 
   const filteredUsers = users?.filter(
     (user) =>
@@ -39,13 +52,17 @@ function UserManagement() {
       user.email.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const deleteHandler = (id) => async (e) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await deleteUser(id).unwrap();
-      } catch (error) {}
+  const handleConfirmDelete = async () => {
+    if (!userToDelete) return;
+    try {
+      await deleteUser(userToDelete).unwrap();
+      setUserToDelete(null); // This closes the dialog
+      toast.success("User deleted.");
+    } catch (error) {
+      toast.error("Failed to delete user.");
     }
   };
+
   if (isLoading) return <SkeletonForm />;
 
   return (
@@ -153,14 +170,44 @@ function UserManagement() {
                     })}
                   </TableCell>
                   <TableCell className="text-right pr-6">
-                    <Button
+                    {/* <Button
                       onClick={deleteHandler(user._id)}
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 cursor-pointer"
                     >
                       <Trash2 className="h-4 w-4  text-destructive" />
-                    </Button>
+                    </Button> */}
+                    <AlertDialog
+                      open={userToDelete === user._id}
+                      onOpenChange={(open) =>
+                        setUserToDelete(open ? user._id : null)
+                      }
+                    >
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </AlertDialogTrigger>
+
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Delete this User?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will permanently remove "{user.name}".
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={handleConfirmDelete}
+                            className="bg-red-600 hover:bg-red-700"
+                          >
+                            Delete User
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </TableCell>
                 </TableRow>
               ))

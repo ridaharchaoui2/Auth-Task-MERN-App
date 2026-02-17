@@ -6,6 +6,6 @@ export const apiSlice = createApi({
     baseUrl: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
     credentials: "include",
   }),
-  tagTypes: ["User", "Tasks"],
+  tagTypes: ["User", "Tasks", "Stats"],
   endpoints: () => ({}),
 });
